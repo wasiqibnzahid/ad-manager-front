@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./src", // or your base URL
+    "jsx": "react-jsx",
+    "strictNullChecks": false,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "src/hooks/auth.js",
+    "src/components/auth/AuthProvider.jsx",
+    "src/services/auth-api.js"
+, "src/components/ReportListUser.jsx"  ],
+  "exclude": ["node_modules"]
+}
