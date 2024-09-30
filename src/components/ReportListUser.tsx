@@ -358,8 +358,8 @@ export default function ReportListUser() {
                         <td>{record.date}</td>
                         <td>{record.impressions}</td>
                         <td>{record.clicks}</td>
-                        <td>{record.ctr}</td>
-                        <td>${record.revenue}</td>
+                        <td>{(record.ctr*100).toFixed(2)}</td>
+                        <td>BDT {record.revenue}</td>
                       </tr>
                     ))
                   ) : (
