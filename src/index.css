@@ -102,3 +102,23 @@ button:focus-visible {
   font-size: 2rem;
 }
 
+.chart-img{
+  height: 80px;
+}
+@media (max-width: 750px){
+  .flex-col-750px{
+    flex-direction: column;
+  }
+  .p-0-750px{
+    padding: 0 !important;
+  }
+  .m-0-750px{
+    margin: 0 !important;
+  }
+  .mt-0-750px{
+    margin-top: 0 !important;
+  }
+  .card-title-user{
+    width: 88%;
+  }
+}

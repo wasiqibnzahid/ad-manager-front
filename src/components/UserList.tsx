@@ -74,21 +74,15 @@ export default function UserList() {
       {/* [Leads] start */}
       <div
         className="col-xxl-8 d-flex flex-column justify-content-center align-items-center mt-5"
-        style={{ margin: "auto" }}
+        style={{ margin: "auto", fontFamily: "Inter,sans-serif" }}
       >
-        <h1
-          className="card-title mb-5 text-center"
-          style={{ fontSize: "52px", color: "#283c50", fontWeight: "700" }}
-        >
-          Admin User Panel{" "}
-        </h1>
         <div className="card stretch stretch-full" style={{ width: "80vw" }}>
           <div className="card-header">
             <h1
               className="card-title mb-5 text-center"
-              style={{ fontSize: "32px" }}
+              style={{ fontSize: "22px", fontFamily: "Inter,sans-serif" }}
             >
-              Users{" "}
+              Admin User Panel{" "} 
             </h1>
           </div>
           <div className="card-body custom-card-action p-0">
@@ -96,11 +90,11 @@ export default function UserList() {
               <table className="table table-hover mb-0">
                 <thead>
                   <tr className="border-b">
-                    <th scope="row" style={{ fontSize: "14px" }}>
+                    <th scope="row" style={{ fontSize: "11px" }}>
                       Username
                     </th>
-                    <th style={{ fontSize: "14px" }}>Report</th>
-                    <th style={{ fontSize: "14px" }}></th>
+                    <th style={{ fontSize: "11px" }}>Report</th>
+                    <th style={{ fontSize: "11px" }}></th>
                     {/* <th style={{ fontSize: "14px" }}>Edit</th> */}
                   </tr>
                 </thead>
@@ -108,12 +102,20 @@ export default function UserList() {
                   mappedUsers.map((user, index) => (
                     <tbody>
                       <tr key={index}>
-                        <td className="text-primary" style={{minWidth: "150px"}}>{user.username}</td>
-                        <td className="text-success" style={{minWidth: "300px"}}>{user.report_name}</td>
-
                         <td
-                          className="text-end d-flex align-items-center justify-content-center"
+                          className="text-primary"
+                          style={{ minWidth: "150px", fontSize: "0.9rem" }}
                         >
+                          {user.username}
+                        </td>
+                        <td
+                          className="text-success"
+                          style={{ minWidth: "300px", fontSize: "0.9rem" }}
+                        >
+                          {user.report_name}
+                        </td>
+
+                        <td className="text-end d-flex align-items-center justify-content-center">
                           <button
                             className="mx-2 btn btn-light  ml-auto"
                             onClick={() => handleOpenModalReport()}
@@ -132,7 +134,7 @@ export default function UserList() {
                             onHide={handleCloseModalReport}
                           >
                             <Modal.Header closeButton>
-                              <Modal.Title>Create User</Modal.Title>
+                              <Modal.Title>Update User Information</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                               <Form>
@@ -191,7 +193,7 @@ export default function UserList() {
                                   style={{ marginTop: "2rem" }}
                                   onClick={handleReportAssign}
                                 >
-                                  Create{" "}
+                                  Update{" "}
                                 </Button>
                               </Form>
                             </Modal.Body>
@@ -213,16 +215,16 @@ export default function UserList() {
               </table>
             </div>
           </div>
-          <div className="d-flex justify-content-center align-items-center gap-3 mt-5">
+          <div className="d-flex justify-content-center flex-col-750px align-items-center gap-3" style={{marginTop: "7rem"}}>
             <Button
-              className="btn btn-primary mt-5 "
+              className="btn btn-primary"
               style={{ width: "300px", aspectRatio: "3/0.5" }}
               onClick={handleShowModal}
             >
               Create User
             </Button>
             <button
-              className=" btn btn-primary mt-5"
+              className=" btn btn-primary"
               style={{ width: "300px", aspectRatio: "3/0.5" }}
               onClick={handleCreateReport}
             >

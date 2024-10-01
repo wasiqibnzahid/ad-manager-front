@@ -36,7 +36,6 @@ export default function ReportList() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-
   const { assignReport } = useAssignReport();
   const { users } = useUsers();
   async function handleReportAssign() {
@@ -67,19 +66,14 @@ export default function ReportList() {
         className="col-xxl-8 d-flex flex-column justify-content-center align-items-center mt-5"
         style={{ margin: "auto" }}
       >
-        <h1
-          className="card-title mb-5 text-center"
-          style={{ fontSize: "52px", color: "#283c50", fontWeight: "700" }}
-        >
-          Admin Report Panel{" "}
-        </h1>
-        <div className="card stretch stretch-full" style={{ width: "80vw" }}>
+        <div className="card stretch stretch-full"
+         style={{ width: "80vw", fontFamily: "Inter,sans-serif", }}>
           <div className="card-header">
             <h1
               className="card-title mb-5 text-center"
-              style={{ fontSize: "32px" }}
+              style={{ fontSize: "22px", fontFamily: "Inter,sans-serif" }}
             >
-              Reports{" "}
+              Admin Report Panel
             </h1>
           </div>
           <div className="card-body custom-card-action p-0">
@@ -87,19 +81,19 @@ export default function ReportList() {
               <table className="table table-hover mb-0">
                 <thead>
                   <tr className="border-b">
-                    <th scope="row" style={{ fontSize: "14px" }}>
+                    <th scope="row" style={{ fontSize: "11px" }}>
                       Report Name
                     </th>
-                    <th style={{ fontSize: "14px" }}>Start Date</th>
-                    <th style={{ fontSize: "14px" }}>End Date</th>
-                    <th style={{ fontSize: "14px" }}>CPM</th>
-                    <th style={{ fontSize: "14px" }}>Status</th>
+                    <th style={{ fontSize: "11px" }}>Start Date</th>
+                    <th style={{ fontSize: "11px" }}>End Date</th>
+                    <th style={{ fontSize: "11px" }}>CPM</th>
+                    <th style={{ fontSize: "11px" }}>Status</th>
                     {/* <th style={{ fontSize: "14px" }}>Edit</th> */}
                   </tr>
                 </thead>
                 {reports.length !== 0 ? (
                   reports.map((report, index) => (
-                    <tbody>
+                    <tbody style={{fontSize: "0.9rem"}}>
                       <tr key={index}>
                         <td className="text-primary">{report.name}</td>
                         <td className="text-success">
@@ -133,8 +127,6 @@ export default function ReportList() {
                           >
                             <i className="fa-solid fa-trash"></i>
                           </button>
-
-                          
                         </td>
                       </tr>
                     </tbody>
@@ -152,16 +144,16 @@ export default function ReportList() {
               </table>
             </div>
           </div>
-          <div className="d-flex justify-content-center align-items-center gap-3 mt-5">
+          <div className="d-flex justify-content-center flex-col-750px align-items-center gap-3" style={{marginTop: "7rem"}}>
             <Button
-              className="btn btn-primary mt-5 "
+              className="btn btn-primary "
               style={{ width: "300px", aspectRatio: "3/0.5" }}
               onClick={handleShowModal}
             >
               Assign Report
             </Button>
             <button
-              className=" btn btn-primary mt-5"
+              className=" btn btn-primary"
               style={{ width: "300px", aspectRatio: "3/0.5" }}
               onClick={handleCreateReport}
             >

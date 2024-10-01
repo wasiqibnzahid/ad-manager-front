@@ -41,65 +41,8 @@ export default function ReportListUser() {
     <>
       <Navbar />
       <div className="main-content">
-        {/* <div className="row">
-          <div className="col-md-4 col-12">
-            <div className="card stretch">
-              <div className="card-body">
-                <div className="hstack justify-content-between">
-                  <div>
-                    <div className="hstack gap-2 mb-4">
-                      <i className="feather-dollar-sign"></i>
-                      <span>Overall Revenue</span>
-                    </div>
-                    <h4 className="fw-bolder mb-3">
-                      $
-                      <span className="counter">{totalRevenue.toFixed(2)}</span>{" "}
-                      USD
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4 col-12">
-            <div className="card stretch">
-              <div className="card-body">
-                <div className="hstack justify-content-between">
-                  <div>
-                    <div className="hstack gap-2 mb-4">
-                      <span>Total Impressions</span>
-                    </div>
-                    <h4 className="fw-bolder mb-3">
-                      <span className="counter">
-                        {totalImpressions.toFixed(0)}
-                      </span>{" "}
-                      Impressions
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4 col-12">
-            <div className="card stretch">
-              <div className="card-body">
-                <div className="hstack justify-content-between">
-                  <div>
-                    <div className="hstack gap-2 mb-4">
-                      <span>Total Clicks</span>
-                    </div>
-                    <h4 className="fw-bolder mb-3">
-                      <span className="counter">{totalClicks.toFixed(0)}</span>{" "}
-                      Clicks
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
         <div className="container my-5">
-          <div className="row">
+          <div className="row" style={{ fontFamily: "Inter,sans-serif" }}>
             {/* Impressions Card */}
             <div className=" col-md-6 mb-4">
               <div
@@ -109,7 +52,7 @@ export default function ReportListUser() {
                 <div className="text-start d-flex flex-column">
                   <p
                     className="text-body-tertiary m-0 fw-bold"
-                    style={{ color: "#8B8F98", fontSize: "14px" }}
+                    style={{ color: "#8B8F98", fontSize: "12px" }}
                   >
                     Impressions
                   </p>
@@ -127,7 +70,7 @@ export default function ReportListUser() {
                   >
                     <span
                       className="fw-bold"
-                      style={{ fontSize: "13px", color: "#8B8F98" }}
+                      style={{ fontSize: "12px", color: "#8B8F98" }}
                     >
                       vs previous:
                     </span>{" "}
@@ -156,7 +99,7 @@ export default function ReportListUser() {
                 <div className="text-start d-flex flex-column">
                   <p
                     className="text-body-tertiary m-0 fw-bold"
-                    style={{ color: "#8B8F98", fontSize: "14px" }}
+                    style={{ color: "#8B8F98", fontSize: "12px" }}
                   >
                     Revenue (BDT)
                   </p>
@@ -174,7 +117,7 @@ export default function ReportListUser() {
                   >
                     <span
                       className="fw-bold"
-                      style={{ fontSize: "13px", color: "#8B8F98" }}
+                      style={{ fontSize: "12px", color: "#8B8F98" }}
                     >
                       vs previous:
                     </span>{" "}
@@ -206,7 +149,7 @@ export default function ReportListUser() {
                 <div className="text-start d-flex flex-column">
                   <p
                     className="text-body-tertiary m-0 fw-bold"
-                    style={{ color: "#8B8F98", fontSize: "14px" }}
+                    style={{ color: "#8B8F98", fontSize: "12px" }}
                   >
                     Clicks
                   </p>
@@ -224,7 +167,7 @@ export default function ReportListUser() {
                   >
                     <span
                       className="fw-bold"
-                      style={{ fontSize: "13px", color: "#8B8F98" }}
+                      style={{ fontSize: "12px", color: "#8B8F98" }}
                     >
                       vs previous:
                     </span>{" "}
@@ -256,7 +199,7 @@ export default function ReportListUser() {
                 <div className="text-start d-flex flex-column">
                   <p
                     className="text-body-tertiary m-0 fw-bold"
-                    style={{ color: "#8B8F98", fontSize: "14px" }}
+                    style={{ color: "#8B8F98", fontSize: "12px" }}
                   >
                     CPM (BDT)
                   </p>
@@ -274,7 +217,7 @@ export default function ReportListUser() {
                   >
                     <span
                       className="fw-bold"
-                      style={{ fontSize: "13px", color: "#8B8F98" }}
+                      style={{ fontSize: "12px", color: "#8B8F98" }}
                     >
                       vs previous:
                     </span>{" "}
@@ -299,30 +242,46 @@ export default function ReportListUser() {
               </div>
             </div>
           </div>
-
+          <div
+            className=" rounded-3 d-flex flex-column justify-content-between"
+            style={{
+              width: "100%",
+              height: "113px",
+              backgroundColor: "#3454D1",
+              padding: "0",
+              fontFamily: "Inter,sans-serif",
+            }}
+          >
+            <div className="text-left mt-3 ml-3 ">
+              <h3 className="stat-title fw-semibold m-0 fs-5 text-white">
+                {totalImpressions.toLocaleString()}
+              </h3>
+              <p
+                className="m-0 fw-semibold"
+                style={{ color: "rgb(223, 227, 240)", fontSize: "12px" }}
+              >
+                Impressions Served
+              </p>
+            </div>
+            <img src="/chart-img.png" className="chart-img" alt="" />
+          </div>
         </div>
       </div>
       {/* [Leads] start */}
       <div
-        className="col-xxl-8 d-flex flex-column justify-content-center align-items-center mt-5"
-        style={{ marginInline: "auto" }}
+        className="col-xxl-8 d-flex flex-column justify-content-center align-items-center"
+        style={{ marginInline: "auto", marginTop: "5rem" }}
       >
-        <h1
-          className="card-title mb-5 text-center"
-          style={{ fontSize: "52px", color: "#283c50", fontWeight: "700" }}
-        >
-          User Report Panel
-        </h1>
         <div
           className="card stretch stretch-full"
-          style={{ width: "80vw", maxWidth: "1400px" }}
+          style={{ width: "87vw", maxWidth: "1400px" }}
         >
-          <div className="card-header d-flex align-items-start">
+          <div className="card-header pb-4 px-3 d-flex align-items-start flex-col-750px">
             <h1
-              className="card-title mb-5 text-center"
-              style={{ fontSize: "32px" }}
+              className="card-title m-3 card-title-user  text-center"
+              style={{ fontSize: "22px", fontFamily: "Inter,sans-serif" }}
             >
-              Report
+              User Report Panel
             </h1>
             <div className="card-header-action d-flex gap-2 px-2 ">
               <DateRangePicker />
@@ -337,43 +296,109 @@ export default function ReportListUser() {
           </div>
           <div className="card-body custom-card-action p-0">
             <div className="table-responsive">
-              <table className="table table-hover mb-0">
+              <table
+                className="table table-hover mb-0"
+                style={{ fontFamily: "Inter,sans-serif" }}
+              >
                 <thead>
                   <tr className="border-b">
-                    <th scope="row" style={{ fontSize: "14px" }}>
+                    <th
+                      scope="row"
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: "700",
+                      }}
+                    >
                       Ad Unit Name
                     </th>
-                    <th style={{ fontSize: "14px" }}>Date</th>
-                    <th style={{ fontSize: "14px" }}>Ad Server Impression</th>
-                    <th style={{ fontSize: "14px" }}>Ad Server Clicks</th>
-                    <th style={{ fontSize: "14px" }}>Ad Server CTR</th>
-                    <th style={{ fontSize: "14px" }}>Revenue</th>
+                    <th style={{ fontSize: "11px", fontWeight: "700" }}>
+                      Date
+                    </th>
+                    <th style={{ fontSize: "11px", fontWeight: "700" }}>
+                      Ad Server Impression
+                    </th>
+                    <th style={{ fontSize: "11px", fontWeight: "700" }}>
+                      Ad Server Clicks
+                    </th>
+                    <th style={{ fontSize: "11px", fontWeight: "700" }}>
+                      Ad Server CTR
+                    </th>
+                    <th style={{ fontSize: "11px", fontWeight: "700" }}>
+                      Revenue
+                    </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody
+                  style={{ fontFamily: "Inter,sans-serif", fontSize: "14px" }}
+                >
                   {records.length > 0 ? (
-                    records.map((record) => (
-                      <tr key={record.id}>
-                        <td className="text-primary">{record.ad_unit_name}</td>
-                        <td>{record.date}</td>
-                        <td>{record.impressions}</td>
-                        <td>{record.clicks}</td>
-                        <td>{(record.ctr*100).toFixed(2)}</td>
-                        <td>BDT {record.revenue}</td>
+                    <>
+                      {records.map((record) => {
+                        console.log(Number(record.revenue));
+                        return (
+                          <tr key={record.id}>
+                            <td className="text-primary">
+                              {record.ad_unit_name}
+                            </td>
+                            <td>{record.date}</td>
+                            <td>{record.impressions}</td>
+                            <td>{record.clicks}</td>
+                            <td>{(record.ctr * 100).toFixed(2)}</td>
+                            <td>৳ {record.revenue}</td>
+                          </tr>
+                        );
+                      })}
+                      <tr>
+                        <td>
+                          Total Impressions:{" "}
+                          <span
+                            style={{
+                              color: "rgb(0, 107, 225)",
+                              fontWeight: "bold",
+                              fontFamily: "Inter,sans-serif",
+                            }}
+                          >
+                            {totalImpressions}
+                          </span>
+                        </td>
+                        <td colSpan={2}>
+                          Total Clicks:{" "}
+                          <span
+                            style={{
+                              color: "rgb(0, 107, 225)",
+                              fontWeight: "bold",
+                              fontFamily: "Inter,sans-serif",
+                            }}
+                          >
+                            {totalClicks}
+                          </span>
+                        </td>
+                        <td colSpan={3}>
+                          Total Revenue:&nbsp;
+                          <span
+                            style={{
+                              color: "rgb(0, 107, 225)",
+                              fontWeight: "bold",
+                              fontFamily: "Inter,sans-serif",
+                            }}
+                          >
+                            ৳{Number(totalRevenue).toFixed(2)}
+                          </span>
+                        </td>
                       </tr>
-                    ))
+                    </>
                   ) : (
                     <></>
                   )}
                   {records.length === 0 && (
-                    <span
+                    <tr
                       className="d-flex mt-6 justify-content-center align-items-center w-full"
                       style={{ width: "90%" }}
                     >
-                      <span className="text-secondary fst-italic">
+                      <td colSpan={6} className="text-secondary fst-italic">
                         No Reports Yet...
-                      </span>
-                    </span>
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>

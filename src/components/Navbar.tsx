@@ -19,16 +19,15 @@ const Navbar = () => {
       <>
         <>
           <nav
-            className="nxl-header"
+            className="nxl-header px-4 p-0-750px"
             style={{
               top: 0,
               left: 0,
-              paddingInline: "4rem",
               position: "static",
               height: "40px",
             }}
           >
-            <div className="header-wrapper" style={{ maxWidth: "1400px" }}>
+            <div className="header-wrapper p-0-750px" style={{ maxWidth: "1400px" }}>
               {/*! [Start] Header Left !*/}
               <div className="header-left d-flex align-items-center gap-4">
                 <img
