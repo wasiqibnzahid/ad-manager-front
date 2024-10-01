@@ -121,7 +121,7 @@ const LineChart = ({
   const chartStyle: any = {
     position: "relative",
     width: "100%",
-    height: "400px", // Adjust height as needed
+    height: "200px", // Adjust height as needed
   };
 
   return (
