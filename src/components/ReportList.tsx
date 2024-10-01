@@ -94,7 +94,7 @@ export default function ReportList() {
                 {reports.length !== 0 ? (
                   reports.map((report, index) => (
                     <tbody style={{fontSize: "0.9rem"}}>
-                      <tr key={index}>
+                      <tr key={report.id}>
                         <td className="text-primary">{report.name}</td>
                         <td className="text-success">
                           {formatDate(report.start_date)}
