@@ -57,3 +57,15 @@ export async function createUser(payload: CreateUserPayload) {
     throw e;
   }
 }
+export async function updateUser(payload: User & { password?: string }) {
+  try {
+    const res = await makeApiCall({
+      url: "admin/update-user",
+      method: "post",
+      data: payload,
+    });
+    return res;
+  } catch (e) {
+    throw e;
+  }
+}

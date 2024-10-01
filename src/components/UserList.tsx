@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import Navbar from "./Navbar.jsx";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDeleteUser, useUsers } from "../hooks/auth";
+import { useDeleteUser, useUpdateUser, useUsers } from "../hooks/auth";
 import { useListReports } from "../hooks/data.js";
 import { useCreateUser } from "../hooks/auth.js";
+import { User } from "@/types/auth.js";
 
 export default function UserList() {
   const [showModal, setShowModal] = useState(false);
@@ -29,13 +30,27 @@ export default function UserList() {
     return new Date(dateStr).toLocaleDateString(undefined, options);
   };
   //   Modal functions
-  const handleOpenModalReport = () => setShowModalReport(true);
-  const handleCloseModalReport = () => setShowModalReport(false);
+  const [selectedUser, setSelectedUser] = useState<
+    (User & { password: string }) | null
+  >(null);
+  const { updateUser } = useUpdateUser();
+  async function handleUpdateUser() {
+    await updateUser(selectedUser).then((res) => {
+      closeEditModal();
+    });
+  }
+  const openEditModal = (user: User) => {
+    setSelectedUser({ ...user, password: "" });
+    setShowModalReport(true);
+  };
+  const closeEditModal = () => {
+    setSelectedUser(null);
+    setShowModalReport(false);
+  };
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   const { createUser: assignReport } = useCreateUser();
   const { users } = useUsers();
-  console.log("FAFA", users);
   async function handleReportAssign() {
     const reportName = reportData.selectedReport;
     await assignReport({
@@ -82,7 +97,7 @@ export default function UserList() {
               className="card-title mb-5 text-center"
               style={{ fontSize: "22px", fontFamily: "Inter,sans-serif" }}
             >
-              Admin User Panel{" "} 
+              Admin User Panel{" "}
             </h1>
           </div>
           <div className="card-body custom-card-action p-0">
@@ -118,7 +133,7 @@ export default function UserList() {
                         <td className="text-end d-flex align-items-center justify-content-center">
                           <button
                             className="mx-2 btn btn-light  ml-auto"
-                            onClick={() => handleOpenModalReport()}
+                            onClick={() => openEditModal(user)}
                           >
                             <i className="fa-solid fa-pen-to-square"></i>
                           </button>
@@ -129,10 +144,7 @@ export default function UserList() {
                           >
                             <i className="fa-solid fa-trash mr-6"></i>
                           </button>
-                          <Modal
-                            show={showModalReport}
-                            onHide={handleCloseModalReport}
-                          >
+                          <Modal show={showModalReport} onHide={closeEditModal}>
                             <Modal.Header closeButton>
                               <Modal.Title>Update User Information</Modal.Title>
                             </Modal.Header>
@@ -143,10 +155,10 @@ export default function UserList() {
                                   <Form.Control
                                     type="username"
                                     placeholder="Update username.."
-                                    value={reportData.username}
+                                    value={selectedUser?.username}
                                     onChange={(e) =>
-                                      setReportData({
-                                        ...reportData,
+                                      setSelectedUser({
+                                        ...selectedUser,
                                         username: e.target.value,
                                       })
                                     }
@@ -157,10 +169,10 @@ export default function UserList() {
                                   <Form.Control
                                     type="password"
                                     placeholder="Update password.."
-                                    value={reportData.password}
+                                    value={selectedUser?.password}
                                     onChange={(e) =>
-                                      setReportData({
-                                        ...reportData,
+                                      setSelectedUser({
+                                        ...selectedUser,
                                         password: e.target.value,
                                       })
                                     }
@@ -171,11 +183,11 @@ export default function UserList() {
                                   <Form.Control
                                     as="select"
                                     name="selectedReport"
-                                    value={reportData.selectedReport}
+                                    value={selectedUser?.report_id}
                                     onChange={(e) =>
-                                      setReportData({
-                                        ...reportData,
-                                        selectedReport: Number(e.target.value),
+                                      setSelectedUser({
+                                        ...selectedUser,
+                                        report_id: Number(e.target.value),
                                       })
                                     }
                                   >
@@ -191,7 +203,7 @@ export default function UserList() {
                                   variant="primary"
                                   type="button"
                                   style={{ marginTop: "2rem" }}
-                                  onClick={handleReportAssign}
+                                  onClick={handleUpdateUser}
                                 >
                                   Update{" "}
                                 </Button>
@@ -215,7 +227,10 @@ export default function UserList() {
               </table>
             </div>
           </div>
-          <div className="d-flex justify-content-center flex-col-750px align-items-center gap-3" style={{marginTop: "7rem"}}>
+          <div
+            className="d-flex justify-content-center flex-col-750px align-items-center gap-3"
+            style={{ marginTop: "7rem" }}
+          >
             <Button
               className="btn btn-primary"
               style={{ width: "300px", aspectRatio: "3/0.5" }}

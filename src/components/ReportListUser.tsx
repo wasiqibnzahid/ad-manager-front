@@ -2,25 +2,46 @@ import React, { useEffect, useMemo, useState } from "react";
 import Navbar from "./Navbar.js";
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useListRecords } from "../hooks/data.js";
+import { useListRecords, useListReports } from "../hooks/data.js";
 import { downloadCSV } from "../services/download-csv.js";
 import { DateRangePicker } from "rsuite";
 import dayjs from "dayjs";
+import { Chart } from "./chart.js";
 export default function ReportListUser() {
   const [dayValue, setDayValue] = useState<[Date, Date]>([
-    dayjs().startOf("year").toDate(),
-    dayjs().endOf("year").toDate(),
+    dayjs().startOf("week").toDate(),
+    dayjs().toDate(),
   ]);
   const params = useParams();
   const { records: recordData } = useListRecords(params?.id || null);
   const records = useMemo(() => {
     const startTime = dayValue[0].getTime();
     const endTime = dayValue[1].getTime();
-    return recordData.filter((record) => {
+    const map: Record<string, (typeof recordData)[0]> = {};
+    recordData.forEach((record) => {
       const recordTime = new Date(record.date).getTime();
-      return recordTime >= startTime && recordTime <= endTime;
+      if (recordTime >= startTime && recordTime <= endTime) {
+        if (map?.[record.date]) {
+          map[record.date].impressions = (
+            Number(map[record.date].impressions) + Number(record.impressions)
+          ).toString();
+          map[record.date].clicks = (
+            Number(map[record.date].clicks) + Number(record.clicks)
+          ).toFixed(2);
+          map[record.date].ctr =
+            Number(map[record.date].ctr) + Number(record.ctr);
+          map[record.date].revenue = (
+            Number(map[record.date].revenue) + Number(record.revenue)
+          ).toFixed(2);
+        } else {
+          map[record.date] = record;
+        }
+      }
     });
+    console.log("FAFA", map);
+    return Object.values(map);
   }, [recordData, dayValue]);
+  const { reports } = useListReports();
   const { totalClicks, totalImpressions, totalRevenue } = useMemo(() => {
     let totalRevenue = 0,
       totalImpressions = 0,
@@ -62,19 +83,19 @@ export default function ReportListUser() {
                       color: "#283C50",
                     }}
                   >
-                    84,059
+                    {totalImpressions.toLocaleString()}
                   </h3>
                   <p
                     className="stat-title m-0 fw-bold mb-1"
                     style={{ color: "#283C50" }}
                   >
-                    <span
+                    {/* <span
                       className="fw-bold"
                       style={{ fontSize: "12px", color: "#8B8F98" }}
                     >
                       vs previous:
-                    </span>{" "}
-                    42,563
+                    </span>{" "} */}
+                    {/* 42,563 */}
                   </p>
                 </div>
                 <div
@@ -109,9 +130,9 @@ export default function ReportListUser() {
                       color: "#283C50",
                     }}
                   >
-                    23,465
+                    {totalRevenue.toLocaleString()}
                   </h3>
-                  <p
+                  {/* <p
                     className="stat-title m-0 fw-bold mb-1"
                     style={{ color: "#283C50" }}
                   >
@@ -122,7 +143,7 @@ export default function ReportListUser() {
                       vs previous:
                     </span>{" "}
                     42,563
-                  </p>
+                  </p> */}
                 </div>
                 <div
                   className="stat-icon text-white d-flex justify-content-center align-items-center"
@@ -159,9 +180,9 @@ export default function ReportListUser() {
                       color: "#283C50",
                     }}
                   >
-                    12,545
+                    {totalClicks.toLocaleString()}
                   </h3>
-                  <p
+                  {/* <p
                     className="stat-title m-0 fw-bold mb-1"
                     style={{ color: "#283C50" }}
                   >
@@ -172,7 +193,7 @@ export default function ReportListUser() {
                       vs previous:
                     </span>{" "}
                     42,563
-                  </p>
+                  </p> */}
                 </div>
                 <div
                   className="stat-icon text-white d-flex justify-content-center align-items-center"
@@ -208,10 +229,14 @@ export default function ReportListUser() {
                     style={{
                       color: "#283C50",
                     }}
+                    onClick={() => console.log(reports)}
                   >
-                    12 BDT
+                    {reports
+                      ?.find((item) => item?.id == (params?.id as any))
+                      ?.cpm_rate?.toLocaleString() || "-"}{" "}
+                    BDT
                   </h3>
-                  <p
+                  {/* <p
                     className="stat-title m-0 fw-bold mb-1"
                     style={{ color: "#283C50" }}
                   >
@@ -222,7 +247,7 @@ export default function ReportListUser() {
                       vs previous:
                     </span>{" "}
                     42,563
-                  </p>
+                  </p> */}
                 </div>
                 <div
                   className="stat-icon text-white d-flex justify-content-center align-items-center"
@@ -246,7 +271,6 @@ export default function ReportListUser() {
             className=" rounded-3 d-flex flex-column justify-content-between"
             style={{
               width: "100%",
-              height: "113px",
               backgroundColor: "#3454D1",
               padding: "0",
               fontFamily: "Inter,sans-serif",
@@ -259,11 +283,48 @@ export default function ReportListUser() {
               <p
                 className="m-0 fw-semibold"
                 style={{ color: "rgb(223, 227, 240)", fontSize: "12px" }}
+                onClick={() => {
+                  console.log(
+                    [...records]
+                      .filter(
+                        (item, index, list) =>
+                          list.findIndex(
+                            (iteminner) => iteminner.date === item.date
+                          ) === index
+                      )
+                      .sort(
+                        (a, b) =>
+                          new Date(a.date).getTime() -
+                          new Date(b.date).getTime()
+                      )
+                      .map((item) => ({
+                        x: item.date,
+                        y: item.impressions,
+                      }))
+                  );
+                }}
               >
                 Impressions Served
               </p>
             </div>
-            <img src="/chart-img.png" className="chart-img" alt="" />
+            <Chart
+              data={[...records]
+                .filter(
+                  (item, index, list) =>
+                    list.findIndex(
+                      (iteminner) => iteminner.date === item.date
+                    ) === index
+                )
+                .sort(
+                  (a, b) =>
+                    new Date(a.date).getTime() - new Date(b.date).getTime()
+                )
+                .map((item) => ({
+                  x: item.date,
+                  y: item.impressions,
+                }))}
+            />
+            {/* <img src="/chart-img.png" className="chart-img" alt="" /> */}
           </div>
         </div>
       </div>
@@ -284,11 +345,19 @@ export default function ReportListUser() {
               User Report Panel
             </h1>
             <div className="card-header-action d-flex gap-2 px-2 ">
-              <DateRangePicker />
+              <DateRangePicker value={dayValue} onChange={setDayValue} />
 
               <Button
                 className="btn btn-primary"
-                onClick={() => downloadCSV(records, "report.csv")}
+                onClick={() =>
+                  downloadCSV(records, "report.csv", [
+                    "date",
+                    "impressions",
+                    "clicks",
+                    "ctr",
+                    "revenue",
+                  ])
+                }
               >
                 Download
               </Button>
@@ -302,15 +371,6 @@ export default function ReportListUser() {
               >
                 <thead>
                   <tr className="border-b">
-                    <th
-                      scope="row"
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: "700",
-                      }}
-                    >
-                      Ad Unit Name
-                    </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
                       Date
                     </th>
@@ -334,16 +394,12 @@ export default function ReportListUser() {
                   {records.length > 0 ? (
                     <>
                       {records.map((record) => {
-                        console.log(Number(record.revenue));
                         return (
                           <tr key={record.id}>
-                            <td className="text-primary">
-                              {record.ad_unit_name}
-                            </td>
                             <td>{record.date}</td>
                             <td>{record.impressions}</td>
                             <td>{record.clicks}</td>
-                            <td>{(record.ctr * 100).toFixed(2)}</td>
+                            <td>{(record.ctr * 100).toFixed(2)}%</td>
                             <td>৳ {record.revenue}</td>
                           </tr>
                         );
@@ -358,7 +414,7 @@ export default function ReportListUser() {
                               fontFamily: "Inter,sans-serif",
                             }}
                           >
-                            {totalImpressions}
+                            {totalImpressions.toLocaleString()}
                           </span>
                         </td>
                         <td colSpan={2}>
@@ -370,7 +426,7 @@ export default function ReportListUser() {
                               fontFamily: "Inter,sans-serif",
                             }}
                           >
-                            {totalClicks}
+                            {totalClicks.toLocaleString()}
                           </span>
                         </td>
                         <td colSpan={3}>
@@ -382,7 +438,7 @@ export default function ReportListUser() {
                               fontFamily: "Inter,sans-serif",
                             }}
                           >
-                            ৳{Number(totalRevenue).toFixed(2)}
+                            ৳{Number(totalRevenue.toFixed(2)).toLocaleString()}
                           </span>
                         </td>
                       </tr>

@@ -1,14 +1,14 @@
 export function downloadCSV<
   T extends Record<K, string | number>,
   K extends keyof T
->(data: T[], filename: string): void {
+>(data: T[], filename: string, keys: K[] = null): void {
   if (!data || data.length === 0) {
     console.error("No data provided for CSV download.");
     return;
   }
 
   // Get the keys from the first object for the CSV headers
-  const headers = Object.keys(data[0]) as K[];
+  const headers = keys || (Object.keys(data[0]) as K[]);
 
   // Create the CSV content as a string
   const csvRows: string[] = [];
@@ -20,10 +20,7 @@ export function downloadCSV<
   for (const row of data) {
     const values = headers.map((header) => {
       // Escape values that contain commas, quotes, or newlines
-      const escapedValue = (row[header].toString()).replace(
-        /"/g,
-        '""'
-      ); // Escape quotes
+      const escapedValue = row[header].toString().replace(/"/g, '""'); // Escape quotes
       return `"${escapedValue}"`; // Enclose in double quotes
     });
     csvRows.push(values.join(","));

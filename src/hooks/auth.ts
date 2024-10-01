@@ -4,6 +4,7 @@ import {
   getUserData,
   listUsers,
   loginUser,
+  updateUser,
 } from "../services/auth-api";
 import {
   QueryClient,
@@ -11,7 +12,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { CreateUserPayload, UserData } from "../types/auth";
+import { CreateUserPayload, User, UserData } from "../types/auth";
 
 export const authKeys = {
   user: ["user"],
@@ -112,5 +113,23 @@ export const useCreateUser = () => {
   return {
     createUser: mutateAsync,
     isCreatingUser: isPending,
+  };
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (user: User & { password?: string }) => {
+      return updateUser(user);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: authKeys.users,
+      });
+    },
+  });
+  return {
+    isUpdatingUser: isPending,
+    updateUser: mutateAsync,
   };
 };
