@@ -2,6 +2,7 @@ export interface CreateUserPayload {
   username: string;
   password: string;
   report_id: number;
+  is_admin: boolean;
 }
 
 export interface User {

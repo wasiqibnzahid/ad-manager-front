@@ -7,6 +7,7 @@ import { downloadCSV } from "../services/download-csv.js";
 import { DateRangePicker } from "rsuite";
 import dayjs from "dayjs";
 import { Chart } from "./chart.js";
+import { Record as IRecord } from "../types/data.js";
 export default function ReportListUser() {
   const [dayValue, setDayValue] = useState<[Date, Date]>([
     dayjs().startOf("week").toDate(),
@@ -14,10 +15,20 @@ export default function ReportListUser() {
   ]);
   const params = useParams();
   const { records: recordData } = useListRecords(params?.id || null);
+  useEffect(() => {
+    if (recordData?.length) {
+      const newArr = [...recordData].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+      const lastDate = dayjs(recordData[recordData.length - 1].date);
+      const firstDate = lastDate.clone().subtract(7, "days");
+      setDayValue([firstDate.toDate(), lastDate.toDate()]);
+    }
+  }, [recordData]);
   const records = useMemo(() => {
     const startTime = dayValue[0].getTime();
     const endTime = dayValue[1].getTime();
-    const map: Record<string, (typeof recordData)[0]> = {};
+    const map: Record<string, IRecord & { num: number }> = {};
     recordData.forEach((record) => {
       const recordTime = new Date(record.date).getTime();
       if (recordTime >= startTime && recordTime <= endTime) {
@@ -28,18 +39,26 @@ export default function ReportListUser() {
           map[record.date].clicks = (
             Number(map[record.date].clicks) + Number(record.clicks)
           ).toFixed(2);
-          map[record.date].ctr =
-            Number(map[record.date].ctr) + Number(record.ctr);
+          map[record.date].num += 1;
+          map[record.date].ctr = Number(map[record.date].ctr);
           map[record.date].revenue = (
             Number(map[record.date].revenue) + Number(record.revenue)
           ).toFixed(2);
         } else {
-          map[record.date] = record;
+          map[record.date] = {
+            ...record,
+            num: 1,
+            ctr: (Number(record.clicks) * Number(record.impressions)) / 1000,
+          };
         }
       }
     });
-    console.log("FAFA", map);
-    return Object.values(map);
+    return Object.values(map)
+      .map((item) => ({
+        ...item,
+        ctr: item.ctr / item.num,
+      }))
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [recordData, dayValue]);
   const { reports } = useListReports();
   const { totalClicks, totalImpressions, totalRevenue } = useMemo(() => {
@@ -283,26 +302,6 @@ export default function ReportListUser() {
               <p
                 className="m-0 fw-semibold"
                 style={{ color: "rgb(223, 227, 240)", fontSize: "12px" }}
-                onClick={() => {
-                  console.log(
-                    [...records]
-                      .filter(
-                        (item, index, list) =>
-                          list.findIndex(
-                            (iteminner) => iteminner.date === item.date
-                          ) === index
-                      )
-                      .sort(
-                        (a, b) =>
-                          new Date(a.date).getTime() -
-                          new Date(b.date).getTime()
-                      )
-                      .map((item) => ({
-                        x: item.date,
-                        y: item.impressions,
-                      }))
-                  );
-                }}
               >
                 Impressions Served
               </p>
@@ -315,10 +314,7 @@ export default function ReportListUser() {
                       (iteminner) => iteminner.date === item.date
                     ) === index
                 )
-                .sort(
-                  (a, b) =>
-                    new Date(a.date).getTime() - new Date(b.date).getTime()
-                )
+
                 .map((item) => ({
                   x: item.date,
                   y: item.impressions,
@@ -350,13 +346,14 @@ export default function ReportListUser() {
               <Button
                 className="btn btn-primary"
                 onClick={() =>
-                  downloadCSV(records, "report.csv", [
-                    "date",
-                    "impressions",
-                    "clicks",
-                    "ctr",
-                    "revenue",
-                  ])
+                  downloadCSV(
+                    records.map((rec) => ({
+                      ...rec,
+                      ctr: `${rec.ctr.toFixed(2)}%`,
+                    })),
+                    "report.csv",
+                    ["date", "impressions", "clicks", "ctr", "revenue"]
+                  )
                 }
               >
                 Download
@@ -397,16 +394,21 @@ export default function ReportListUser() {
                         return (
                           <tr key={record.id}>
                             <td>{record.date}</td>
-                            <td>{record.impressions}</td>
-                            <td>{record.clicks}</td>
-                            <td>{(record.ctr * 100).toFixed(2)}%</td>
-                            <td>৳ {record.revenue}</td>
+                            <td>{record.impressions.toLocaleString()}</td>
+                            <td>{Number(record.clicks).toLocaleString()}</td>
+                            <td>{record.ctr.toFixed(2)}%</td>
+                            <td>
+                              ৳{" "}
+                              {Number(
+                                Number(record.revenue).toFixed(2)
+                              ).toLocaleString()}
+                            </td>
                           </tr>
                         );
                       })}
                       <tr>
+                        <td></td>
                         <td>
-                          Total Impressions:{" "}
                           <span
                             style={{
                               color: "rgb(0, 107, 225)",
@@ -417,8 +419,7 @@ export default function ReportListUser() {
                             {totalImpressions.toLocaleString()}
                           </span>
                         </td>
-                        <td colSpan={2}>
-                          Total Clicks:{" "}
+                        <td>
                           <span
                             style={{
                               color: "rgb(0, 107, 225)",
@@ -429,8 +430,8 @@ export default function ReportListUser() {
                             {totalClicks.toLocaleString()}
                           </span>
                         </td>
-                        <td colSpan={3}>
-                          Total Revenue:&nbsp;
+                        <td></td>
+                        <td>
                           <span
                             style={{
                               color: "rgb(0, 107, 225)",

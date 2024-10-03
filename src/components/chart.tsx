@@ -55,12 +55,12 @@ const LineChart = ({
   const chartData = {
     datasets: [
       {
-        label: "My Dataset",
+        label: "Impression Report",
         data: data, // Accepts data in the form of [{x: number, y: date string}]
         borderColor: "white",
         backgroundColor: "rgba(255, 255, 255, 0.2)",
         fill: true, // Fill below the line
-        pointRadius: 0, // No points on the line
+        pointRadius: 2, // No points on the line
         tension: 0.4, // Optional: makes the line smoother
       },
     ],
@@ -85,6 +85,7 @@ const LineChart = ({
     },
     scales: {
       x: {
+        display: true,
         type: "time", // This tells Chart.js to use time-based x-axis
         time: {
           unit: "day", // Adjust this based on how you want the x-axis labeled (e.g., day, month)
@@ -100,7 +101,6 @@ const LineChart = ({
       y: {
         // beginAtZero: true,
         ticks: {
-          color: "white", // Y-axis label color
           display: false,
         },
         grid: {
@@ -111,6 +111,10 @@ const LineChart = ({
     plugins: {
       legend: {
         display: false, // Hide the legend if not needed
+      },
+      tooltip: {
+        enabled: true,
+        
       },
     },
     responsive: true,

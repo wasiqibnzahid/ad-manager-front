@@ -6,6 +6,7 @@ import { useDeleteUser, useUpdateUser, useUsers } from "../hooks/auth";
 import { useListReports } from "../hooks/data.js";
 import { useCreateUser } from "../hooks/auth.js";
 import { User } from "@/types/auth.js";
+import { Checkbox } from "rsuite";
 
 export default function UserList() {
   const [showModal, setShowModal] = useState(false);
@@ -15,6 +16,7 @@ export default function UserList() {
     username: "",
     password: "",
     selectedReport: null as number,
+    isAdmin: false,
   });
 
   const { reports } = useListReports();
@@ -57,6 +59,7 @@ export default function UserList() {
       username: reportData.username,
       password: reportData.password,
       report_id: reportName,
+      is_admin: reportData.isAdmin,
     });
 
     handleCloseModal();
@@ -64,6 +67,7 @@ export default function UserList() {
       username: "",
       password: "",
       selectedReport: null as number,
+      isAdmin: false,
     });
   }
   function handleCreateReport() {
@@ -276,12 +280,22 @@ export default function UserList() {
                 }
               />
             </Form.Group>
+            <Form.Group>
+              <Form.Label>Admin</Form.Label>
+              <Checkbox
+                checked={reportData.isAdmin}
+                onChange={() =>
+                  setReportData({ ...reportData, isAdmin: !reportData.isAdmin })
+                }
+              />
+            </Form.Group>
             <Form.Group controlId="formReports">
               <Form.Label>Reports:</Form.Label>
               <Form.Control
+                disabled={reportData.isAdmin}
                 as="select"
                 name="selectedReport"
-                value={reportData.selectedReport}
+                value={!reportData.isAdmin ? reportData.selectedReport : null}
                 onChange={(e) =>
                   setReportData({
                     ...reportData,
