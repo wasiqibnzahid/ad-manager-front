@@ -9,6 +9,7 @@ export interface User {
   username: string;
   report_id: number;
   id: number;
+  is_admin: boolean;
 }
 
 export interface UserData {

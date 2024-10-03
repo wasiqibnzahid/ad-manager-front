@@ -182,10 +182,23 @@ export default function UserList() {
                                     }
                                   />
                                 </Form.Group>
+                                <Form.Group>
+                                  <Form.Label>Admin</Form.Label>
+                                  <Checkbox
+                                    checked={selectedUser?.is_admin}
+                                    onChange={() =>
+                                      setSelectedUser({
+                                        ...selectedUser,
+                                        is_admin: !selectedUser.is_admin,
+                                      })
+                                    }
+                                  />
+                                </Form.Group>
                                 <Form.Group controlId="formReports">
                                   <Form.Label>Reports:</Form.Label>
                                   <Form.Control
                                     as="select"
+                                    disabled={selectedUser?.is_admin}
                                     name="selectedReport"
                                     value={selectedUser?.report_id}
                                     onChange={(e) =>

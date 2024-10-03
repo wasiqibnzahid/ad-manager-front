@@ -36,7 +36,12 @@ export async function listUsers() {
   return makeApiCall<User[]>({
     method: "get",
     url: "list_users",
-  });
+  }).then((res) =>
+    res.map((item: any) => ({
+      ...item,
+      is_admin: item.is_admin === "True" ? true : false,
+    }))
+  );
 }
 export async function deleteUser(user_id: number) {
   return makeApiCall({
