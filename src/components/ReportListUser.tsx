@@ -48,7 +48,7 @@ export default function ReportListUser() {
           map[record.date] = {
             ...record,
             num: 1,
-            ctr: (Number(record.clicks) * Number(record.impressions)) / 1000,
+            ctr: 0,
           };
         }
       }
@@ -56,7 +56,7 @@ export default function ReportListUser() {
     return Object.values(map)
       .map((item) => ({
         ...item,
-        ctr: item.ctr / item.num,
+        ctr: (Number(item.clicks) * Number(item.impressions)) / 100,
       }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [recordData, dayValue]);
