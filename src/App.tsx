@@ -32,38 +32,36 @@ function App() {
         <link
           rel="shortcut icon"
           type="image/png"
-          href="assets/images/logo.png"
+          href="/images/logo.png"
         />
         {/* <!--! END: Favicon--> */}
         {/* <!--! BEGIN: Bootstrap CSS--> */}
         <link
           rel="stylesheet"
           type="text/css"
-          href="src/assets/css/bootstrap.min.css"
+          href="/css/bootstrap.min.css"
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="src/assets/vendors/css/vendors.min.css"
+          href="/vendors/css/vendors.min.css"
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="src/assets/vendors/css/daterangepicker.min.css"
+          href="/vendors/css/daterangepicker.min.css"
         />
         {/* <!--! END: Vendors CSS--> */}
         {/* <!--! BEGIN: Custom CSS--> */}
         <link
           rel="stylesheet"
           type="text/css"
-          href="src/assets/css/theme.min.css"
+          href="/css/theme.min.css"
         />
         {/* <!--! END: Custom CSS--> */}
         {/* <!--! HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries !--> */}
         {/* <!--! WARNING: Respond.js doesn"t work if you view the page via file: !--> */}
         {/* <!--[if lt IE 9]> */}
-        <script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         {/* <![endif]--> */}
         <link
           rel="stylesheet"
