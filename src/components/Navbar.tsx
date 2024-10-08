@@ -31,7 +31,7 @@ const Navbar = () => {
               {/*! [Start] Header Left !*/}
               <div className="header-left d-flex align-items-center gap-4">
                 <img
-                  src="/src/assets/images/logo.png"
+                  src="/images/logo.png"
                   alt=""
                   className="logo logo-lg"
                   style={{ width: "150px", padding: 0, height: "56.25px" }}

@@ -56,7 +56,7 @@ export default function Login() {
               <div className="card mb-4 mt-5 mx-4 mx-sm-0 position-relative">
                 <div className="bg-white p-2 rounded-circle position-absolute translate-middle top-0 start-50">
                   <img
-                    src="src/assets/images/logo.png"
+                    src="/images/logo.png"
                     alt=""
                     style={{
                       width: "150px",
