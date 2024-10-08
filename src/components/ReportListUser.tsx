@@ -71,7 +71,7 @@ export default function ReportListUser() {
       totalClicks += Number(record.clicks || 0);
     }
     return {
-      totalRevenue,
+      totalRevenue: Number(totalRevenue.toFixed(2)),
       totalImpressions,
       totalClicks,
     };
