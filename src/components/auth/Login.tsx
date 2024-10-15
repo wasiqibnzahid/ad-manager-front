@@ -73,7 +73,7 @@ export default function Login() {
                       <input
                         type="email"
                         className="form-control"
-                        placeholder="Username..."
+                        placeholder="Username"
                         required
                         value={authData.email}
                         onChange={(e) =>

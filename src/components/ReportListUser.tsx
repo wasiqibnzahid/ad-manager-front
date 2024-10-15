@@ -457,7 +457,20 @@ export default function ReportListUser() {
                             {totalClicks.toLocaleString()}
                           </span>
                         </td>
-                        <td></td>
+                        <td>
+                          <span
+                            style={{
+                              color: "rgb(0, 107, 225)",
+                              fontWeight: "bold",
+                              fontFamily: "Inter,sans-serif",
+                            }}
+                          >
+                            {(
+                              (Number(totalClicks) / Number(totalImpressions)) *
+                              100
+                            ).toFixed(2)}
+                          </span>
+                        </td>
                         <td>
                           <span
                             style={{
