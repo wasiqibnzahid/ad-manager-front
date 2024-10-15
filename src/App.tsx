@@ -32,7 +32,7 @@ function App() {
         <link
           rel="shortcut icon"
           type="image/png"
-          href="/images/logo.png"
+          href="/images/favicon.png"
         />
         {/* <!--! END: Favicon--> */}
         {/* <!--! BEGIN: Bootstrap CSS--> */}
