@@ -468,7 +468,7 @@ export default function ReportListUser() {
                             {(
                               (Number(totalClicks) / Number(totalImpressions)) *
                               100
-                            ).toFixed(2)}
+                            ).toFixed(2)}%
                           </span>
                         </td>
                         <td>
