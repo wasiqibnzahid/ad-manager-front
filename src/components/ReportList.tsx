@@ -8,6 +8,7 @@ import {
   useAssignReport,
 } from "../hooks/data.js";
 import { useUsers } from "../hooks/auth.js";
+import { Report } from "../types/data.js";
 
 export default function ReportList() {
   const [showModal, setShowModal] = useState(false);
@@ -33,8 +34,13 @@ export default function ReportList() {
     return new Date(dateStr).toLocaleDateString(undefined, options);
   };
   //   Modal functions
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<Report>(null);
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setShowDeleteModal(false);
+  };
 
   const { assignReport } = useAssignReport();
   const { users } = useUsers();
@@ -54,9 +60,11 @@ export default function ReportList() {
   function handleCreateReport() {
     navigate("/create-report-admin");
   }
-  const { deleteReport } = useDeleteReport();
-  async function removeReport(report_id: number) {
-    await deleteReport(report_id);
+  const { deleteReport, isDeletingReport } = useDeleteReport();
+  async function removeReport() {
+    await deleteReport(selectedReport.id);
+    handleCloseModal();
+    setSelectedReport(null);
   }
   return (
     <>
@@ -66,8 +74,10 @@ export default function ReportList() {
         className="col-xxl-8 d-flex flex-column justify-content-center align-items-center mt-5"
         style={{ margin: "auto" }}
       >
-        <div className="card stretch stretch-full"
-         style={{ width: "80vw", fontFamily: "Inter,sans-serif", }}>
+        <div
+          className="card stretch stretch-full"
+          style={{ width: "80vw", fontFamily: "Inter,sans-serif" }}
+        >
           <div className="card-header">
             <h1
               className="card-title mb-5 text-center"
@@ -93,7 +103,7 @@ export default function ReportList() {
                 </thead>
                 {reports.length !== 0 ? (
                   reports.map((report, index) => (
-                    <tbody style={{fontSize: "0.9rem"}}>
+                    <tbody style={{ fontSize: "0.9rem" }}>
                       <tr key={report.id}>
                         <td className="text-primary">{report.name}</td>
                         <td className="text-success">
@@ -123,7 +133,10 @@ export default function ReportList() {
                           </button>
                           <button
                             className="mx-2 btn btn-light"
-                            onClick={() => removeReport(report.id)}
+                            onClick={() => {
+                              setSelectedReport(report);
+                              setShowDeleteModal(true);
+                            }}
                           >
                             <i className="fa-solid fa-trash"></i>
                           </button>
@@ -144,7 +157,10 @@ export default function ReportList() {
               </table>
             </div>
           </div>
-          <div className="d-flex justify-content-center flex-col-750px align-items-center gap-3" style={{marginTop: "7rem"}}>
+          <div
+            className="d-flex justify-content-center flex-col-750px align-items-center gap-3"
+            style={{ marginTop: "7rem" }}
+          >
             <Button
               className="btn btn-primary "
               style={{ width: "300px", aspectRatio: "3/0.5" }}
@@ -221,6 +237,25 @@ export default function ReportList() {
               Assign Report
             </Button>
           </Form>
+        </Modal.Body>
+      </Modal>
+      <Modal show={showDeleteModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Report</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to delete {selectedReport?.name}?</p>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="danger"
+              type="button"
+              style={{ marginTop: "2rem" }}
+              onClick={removeReport}
+              disabled={isDeletingReport}
+            >
+              Delete
+            </Button>
+          </div>
         </Modal.Body>
       </Modal>
     </>

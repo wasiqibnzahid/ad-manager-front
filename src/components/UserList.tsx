@@ -148,85 +148,6 @@ export default function UserList() {
                           >
                             <i className="fa-solid fa-trash mr-6"></i>
                           </button>
-                          <Modal show={showModalReport} onHide={closeEditModal}>
-                            <Modal.Header closeButton>
-                              <Modal.Title>Update User Information</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                              <Form>
-                                <Form.Group controlId="formUsername">
-                                  <Form.Label>Username:</Form.Label>
-                                  <Form.Control
-                                    type="username"
-                                    placeholder="Update username.."
-                                    value={selectedUser?.username}
-                                    onChange={(e) =>
-                                      setSelectedUser({
-                                        ...selectedUser,
-                                        username: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Form.Group>
-                                <Form.Group controlId="formPassword">
-                                  <Form.Label>Password:</Form.Label>
-                                  <Form.Control
-                                    type="password"
-                                    placeholder="Update password.."
-                                    value={selectedUser?.password}
-                                    onChange={(e) =>
-                                      setSelectedUser({
-                                        ...selectedUser,
-                                        password: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Form.Group>
-                                <Form.Group>
-                                  <Form.Label>Admin</Form.Label>
-                                  <Checkbox
-                                    checked={selectedUser?.is_admin}
-                                    onChange={() =>
-                                      setSelectedUser({
-                                        ...selectedUser,
-                                        is_admin: !selectedUser.is_admin,
-                                      })
-                                    }
-                                  />
-                                </Form.Group>
-                                <Form.Group controlId="formReports">
-                                  <Form.Label>Reports:</Form.Label>
-                                  <Form.Control
-                                    as="select"
-                                    disabled={selectedUser?.is_admin}
-                                    name="selectedReport"
-                                    value={selectedUser?.report_id}
-                                    onChange={(e) =>
-                                      setSelectedUser({
-                                        ...selectedUser,
-                                        report_id: Number(e.target.value),
-                                      })
-                                    }
-                                  >
-                                    <option value="">Select a report</option>
-                                    {reports.map((report, index) => (
-                                      <option key={index} value={report.id}>
-                                        {report.name}
-                                      </option>
-                                    ))}
-                                  </Form.Control>
-                                </Form.Group>
-                                <Button
-                                  variant="primary"
-                                  type="button"
-                                  style={{ marginTop: "2rem" }}
-                                  onClick={handleUpdateUser}
-                                >
-                                  Update{" "}
-                                </Button>
-                              </Form>
-                            </Modal.Body>
-                          </Modal>
                         </td>
                       </tr>
                     </tbody>
@@ -265,76 +186,160 @@ export default function UserList() {
           </div>
         </div>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formUsername">
-              <Form.Label>Username:</Form.Label>
-              <Form.Control
-                type="username"
-                placeholder="Enter a username.."
-                value={reportData.username}
-                onChange={(e) =>
-                  setReportData({ ...reportData, username: e.target.value })
-                }
-              />
-            </Form.Group>
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password:</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter a password.."
-                value={reportData.password}
-                onChange={(e) =>
-                  setReportData({ ...reportData, password: e.target.value })
-                }
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Admin</Form.Label>
-              <Checkbox
-                checked={reportData.isAdmin}
-                onChange={() =>
-                  setReportData({ ...reportData, isAdmin: !reportData.isAdmin })
-                }
-              />
-            </Form.Group>
-            <Form.Group controlId="formReports">
-              <Form.Label>Reports:</Form.Label>
-              <Form.Control
-                disabled={reportData.isAdmin}
-                as="select"
-                name="selectedReport"
-                value={!reportData.isAdmin ? reportData.selectedReport : null}
-                onChange={(e) =>
-                  setReportData({
-                    ...reportData,
-                    selectedReport: Number(e.target.value),
-                  })
-                }
+      <div>
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create User</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formUsername">
+                <Form.Label>Username:</Form.Label>
+                <Form.Control
+                  type="username"
+                  placeholder="Enter a username.."
+                  value={reportData.username}
+                  onChange={(e) =>
+                    setReportData({ ...reportData, username: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group controlId="formPassword">
+                <Form.Label>Password:</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter a password.."
+                  value={reportData.password}
+                  onChange={(e) =>
+                    setReportData({ ...reportData, password: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Admin</Form.Label>
+                <Checkbox
+                  checked={reportData.isAdmin}
+                  onChange={() =>
+                    setReportData({
+                      ...reportData,
+                      isAdmin: !reportData.isAdmin,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group controlId="formReports">
+                <Form.Label>Reports:</Form.Label>
+                <Form.Control
+                  disabled={reportData.isAdmin}
+                  as="select"
+                  name="selectedReport"
+                  value={!reportData.isAdmin ? reportData.selectedReport : null}
+                  onChange={(e) =>
+                    setReportData({
+                      ...reportData,
+                      selectedReport: Number(e.target.value),
+                    })
+                  }
+                >
+                  <option value="">Select a report</option>
+                  {reports.map((report, index) => (
+                    <option key={index} value={report.id}>
+                      {report.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="button"
+                style={{ marginTop: "2rem" }}
+                onClick={handleReportAssign}
               >
-                <option value="">Select a report</option>
-                {reports.map((report, index) => (
-                  <option key={index} value={report.id}>
-                    {report.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="button"
-              style={{ marginTop: "2rem" }}
-              onClick={handleReportAssign}
-            >
-              Create{" "}
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+                Create{" "}
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>{" "}
+        <Modal show={showModalReport} onHide={closeEditModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Update User Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formUsername">
+                <Form.Label>Username:</Form.Label>
+                <Form.Control
+                  type="username"
+                  placeholder="Update username.."
+                  value={selectedUser?.username}
+                  onChange={(e) =>
+                    setSelectedUser({
+                      ...selectedUser,
+                      username: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group controlId="formPassword">
+                <Form.Label>Password:</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Update password.."
+                  value={selectedUser?.password}
+                  onChange={(e) =>
+                    setSelectedUser({
+                      ...selectedUser,
+                      password: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Admin</Form.Label>
+                <Checkbox
+                  checked={selectedUser?.is_admin}
+                  onChange={() =>
+                    setSelectedUser({
+                      ...selectedUser,
+                      is_admin: !selectedUser.is_admin,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group controlId="formReports">
+                <Form.Label>Reports:</Form.Label>
+                <Form.Control
+                  as="select"
+                  disabled={selectedUser?.is_admin}
+                  name="selectedReport"
+                  value={selectedUser?.report_id}
+                  onChange={(e) =>
+                    setSelectedUser({
+                      ...selectedUser,
+                      report_id: Number(e.target.value),
+                    })
+                  }
+                >
+                  <option value="">Select a report</option>
+                  {reports.map((report, index) => (
+                    <option key={index} value={report.id}>
+                      {report.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="button"
+                style={{ marginTop: "2rem" }}
+                onClick={handleUpdateUser}
+              >
+                Update{" "}
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </div>
     </>
   );
 }

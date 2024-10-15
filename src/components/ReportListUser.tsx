@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
+import utc from "dayjs/plugin/utc";
+
 import Navbar from "./Navbar.js";
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -8,6 +10,7 @@ import { DateRangePicker } from "rsuite";
 import dayjs from "dayjs";
 import { Chart } from "./chart.js";
 import { Record as IRecord } from "../types/data.js";
+dayjs.extend(utc);
 export default function ReportListUser() {
   const [dayValue, setDayValue] = useState<[Date, Date]>([
     dayjs().startOf("week").toDate(),
@@ -20,9 +23,21 @@ export default function ReportListUser() {
       const newArr = [...recordData].sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       );
-      const lastDate = dayjs(recordData[recordData.length - 1].date);
-      const firstDate = lastDate.clone().subtract(7, "days");
-      setDayValue([firstDate.toDate(), lastDate.toDate()]);
+      const lastDate = recordData.reduce((latest, record) => {
+        const recordDate = dayjs(record.date);
+
+        // If `latest` is null or the current recordDate is after the latest, update it
+        if (!latest || recordDate.isAfter(latest)) {
+          return recordDate;
+        }
+        return latest;
+      }, null as dayjs.Dayjs | null);
+      const firstDate = lastDate?.clone().subtract(6, "days");
+      console.log("HERE", [firstDate?.toDate(), lastDate?.toDate()]);
+      setDayValue([
+        new Date(firstDate.format("YYYY-MM-DD")),
+        new Date(lastDate.format("YYYY-MM-DD")),
+      ]);
     }
   }, [recordData]);
   const records = useMemo(() => {
@@ -149,7 +164,7 @@ export default function ReportListUser() {
                       color: "#283C50",
                     }}
                   >
-                    {totalRevenue.toLocaleString()}
+                    {Number(totalRevenue.toFixed(2)).toLocaleString()}
                   </h3>
                   {/* <p
                     className="stat-title m-0 fw-bold mb-1"
@@ -199,7 +214,7 @@ export default function ReportListUser() {
                       color: "#283C50",
                     }}
                   >
-                    {totalClicks.toLocaleString()}
+                    {Number(totalClicks.toFixed(2)).toLocaleString()}
                   </h3>
                   {/* <p
                     className="stat-title m-0 fw-bold mb-1"
@@ -394,7 +409,9 @@ export default function ReportListUser() {
                         return (
                           <tr key={record.id}>
                             <td>{record.date}</td>
-                            <td>{record.impressions.toLocaleString()}</td>
+                            <td>
+                              {parseInt(record.impressions).toLocaleString()}
+                            </td>
                             <td>{Number(record.clicks).toLocaleString()}</td>
                             <td>{record.ctr.toFixed(2)}%</td>
                             <td>
@@ -407,7 +424,17 @@ export default function ReportListUser() {
                         );
                       })}
                       <tr>
-                        <td></td>
+                        <td>
+                          <span
+                            style={{
+                              color: "rgb(0, 107, 225)",
+                              fontWeight: "bold",
+                              fontFamily: "Inter,sans-serif",
+                            }}
+                          >
+                            Summary
+                          </span>
+                        </td>
                         <td>
                           <span
                             style={{

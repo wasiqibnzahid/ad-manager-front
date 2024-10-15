@@ -22,6 +22,7 @@ import {
 } from "chart.js";
 import "chartjs-adapter-date-fns"; // For handling date strings in x-axis
 import { _DeepPartialObject } from "chart.js/dist/types/utils";
+import dayjs from "dayjs";
 
 // Register the required components for Chart.js
 ChartJS.register(
@@ -55,7 +56,7 @@ const LineChart = ({
   const chartData = {
     datasets: [
       {
-        label: "Impression Report",
+        label: "Impression",
         data: data, // Accepts data in the form of [{x: number, y: date string}]
         borderColor: "white",
         backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -114,7 +115,18 @@ const LineChart = ({
       },
       tooltip: {
         enabled: true,
-        
+        callbacks: {
+          // Override the tooltip title (which shows the x-axis value)
+          title: (tooltipItems: any) => {
+            // Format the x-axis date to "Sep 09, 2024"
+            const date = tooltipItems[0].raw.x;
+            return dayjs(date).format("MMM DD, YYYY");
+          },
+          // Keep the label as is, showing y-axis value only
+          label: (tooltipItem: any) => {
+            return `Impressions: ${tooltipItem.raw.y}`;
+          },
+        },
       },
     },
     responsive: true,

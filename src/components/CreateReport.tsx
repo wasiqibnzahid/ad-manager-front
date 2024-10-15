@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Navbar from "./Navbar.js";
-import { DateRangePicker } from "rsuite";
+import { DatePicker, DateRangeInput, DateRangePicker } from "rsuite";
 import { useNavigate } from "react-router-dom";
 import { DateRange } from "rsuite/esm/DateRangePicker/types";
 import { useAdUnits, useCreateReport } from "../hooks/data";
@@ -18,8 +18,8 @@ export default function CreateReport() {
     cpm: 10,
   });
   console.log(reportInfo);
-  function dateRangeHandle(value: DateRange) {
-    setReportInfo({ ...reportInfo, dateRange: value });
+  function dateRangeHandle(value: Date) {
+    setReportInfo({ ...reportInfo, dateRange: [value, reportInfo.dateRange[1]] });
   }
   async function handleCreateReportClick() {
     await createReport({
@@ -122,12 +122,12 @@ export default function CreateReport() {
                     <div className="row mb-4 text-left">
                       <div className="col-lg-4">
                         <label htmlFor="fullnameInput" className="fw-semibold">
-                          Date Range:{" "}
+                          Start Date:{" "}
                         </label>
                       </div>
                       <div className="col-lg-8">
-                        <DateRangePicker
-                          value={reportInfo.dateRange}
+                        <DatePicker
+                          value={new Date()}
                           onChange={dateRangeHandle}
                         />
                       </div>
