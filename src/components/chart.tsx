@@ -124,7 +124,7 @@ const LineChart = ({
           },
           // Keep the label as is, showing y-axis value only
           label: (tooltipItem: any) => {
-            return `Impressions: ${tooltipItem.raw.y}`;
+            return `Impressions: ${Number(tooltipItem.raw.y).toLocaleString()}`;
           },
         },
       },

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDeleteUser, useUpdateUser, useUsers } from "../hooks/auth";
 import { useListReports } from "../hooks/data.js";
 import { useCreateUser } from "../hooks/auth.js";
-import { User } from "@/types/auth.js";
+import { User } from "../types/auth.js";
 import { Checkbox } from "rsuite";
 
 export default function UserList() {
@@ -33,7 +33,7 @@ export default function UserList() {
   };
   //   Modal functions
   const [selectedUser, setSelectedUser] = useState<
-    (User & { password: string }) | null
+    (User & { password?: string }) | null
   >(null);
   const { updateUser } = useUpdateUser();
   async function handleUpdateUser() {
@@ -41,6 +41,8 @@ export default function UserList() {
       closeEditModal();
     });
   }
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const openEditModal = (user: User) => {
     setSelectedUser({ ...user, password: "" });
     setShowModalReport(true);
@@ -50,7 +52,10 @@ export default function UserList() {
     setShowModalReport(false);
   };
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setShowDeleteModal(false);
+  };
   const { createUser: assignReport } = useCreateUser();
   const { users } = useUsers();
   async function handleReportAssign() {
@@ -83,7 +88,7 @@ export default function UserList() {
       return userData;
     });
   }, [users, reports]);
-  const { deleteUser } = useDeleteUser();
+  const { deleteUser, isDeletingUser } = useDeleteUser();
   async function removeUser(user_id: number) {
     await deleteUser(user_id);
   }
@@ -337,6 +342,25 @@ export default function UserList() {
                 Update{" "}
               </Button>
             </Form>
+          </Modal.Body>
+        </Modal>
+        <Modal show={showDeleteModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Report</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure you want to delete {selectedUser?.username}?</p>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                variant="danger"
+                type="button"
+                style={{ marginTop: "2rem" }}
+                onClick={() => deleteUser(selectedUser.id)}
+                disabled={isDeletingUser}
+              >
+                Delete
+              </Button>
+            </div>
           </Modal.Body>
         </Modal>
       </div>

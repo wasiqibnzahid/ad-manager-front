@@ -95,7 +95,6 @@ export default function ReportList() {
                       Report Name
                     </th>
                     <th style={{ fontSize: "11px" }}>Start Date</th>
-                    <th style={{ fontSize: "11px" }}>End Date</th>
                     <th style={{ fontSize: "11px" }}>CPM</th>
                     <th style={{ fontSize: "11px" }}>Status</th>
                     {/* <th style={{ fontSize: "14px" }}>Edit</th> */}
@@ -109,9 +108,7 @@ export default function ReportList() {
                         <td className="text-success">
                           {formatDate(report.start_date)}
                         </td>
-                        <td className="text-danger">
-                          {formatDate(report.end_date)}
-                        </td>
+
                         <td className={"text-success"}>{report?.cpm_rate}</td>
                         <td
                           className={
