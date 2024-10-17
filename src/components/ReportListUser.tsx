@@ -387,13 +387,13 @@ export default function ReportListUser() {
                       Date
                     </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
-                      Ad Server Impression
+                    Impression
                     </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
-                      Ad Server Clicks
+                      Clicks
                     </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
-                      Ad Server CTR
+                      CTR
                     </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
                       Revenue
