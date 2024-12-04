@@ -127,7 +127,7 @@ export default function CreateReport() {
                       </div>
                       <div className="col-lg-8">
                         <DatePicker
-                          value={new Date()}
+                          value={reportInfo.dateRange[0]}
                           onChange={dateRangeHandle}
                         />
                       </div>

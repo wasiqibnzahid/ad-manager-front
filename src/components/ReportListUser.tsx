@@ -33,7 +33,6 @@ export default function ReportListUser() {
         return latest;
       }, null as dayjs.Dayjs | null);
       const firstDate = lastDate?.clone().subtract(6, "days");
-      console.log("HERE", [firstDate?.toDate(), lastDate?.toDate()]);
       setDayValue([
         new Date(firstDate.format("YYYY-MM-DD")),
         new Date(lastDate.format("YYYY-MM-DD")),
@@ -263,7 +262,6 @@ export default function ReportListUser() {
                     style={{
                       color: "#283C50",
                     }}
-                    onClick={() => console.log(reports)}
                   >
                     {reports
                       ?.find((item) => item?.id == (params?.id as any))
@@ -356,7 +354,32 @@ export default function ReportListUser() {
               User Report Panel
             </h1>
             <div className="card-header-action d-flex gap-2 px-2 ">
-              <DateRangePicker value={dayValue} onChange={setDayValue} />
+              <DateRangePicker
+                value={dayValue}
+                onChange={(dates) => {
+                  const utcEndDate = new Date(
+                    Date.UTC(
+                      dates[1].getFullYear(),
+                      dates[1].getMonth(),
+                      dates[1].getDate(),
+                      0,
+                      0,
+                      0 // Start of the day in UTC
+                    )
+                  );
+                  const utcStartDate = new Date(
+                    Date.UTC(
+                      dates[0].getFullYear(),
+                      dates[0].getMonth(),
+                      dates[0].getDate(),
+                      0,
+                      0,
+                      0
+                    )
+                  );
+                  setDayValue([utcStartDate, utcEndDate]);
+                }}
+              />
 
               <Button
                 className="btn btn-primary"
@@ -387,14 +410,12 @@ export default function ReportListUser() {
                       Date
                     </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
-                    Impression
+                      Impression
                     </th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
                       Clicks
                     </th>
-                    <th style={{ fontSize: "11px", fontWeight: "700" }}>
-                      CTR
-                    </th>
+                    <th style={{ fontSize: "11px", fontWeight: "700" }}>CTR</th>
                     <th style={{ fontSize: "11px", fontWeight: "700" }}>
                       Revenue
                     </th>
@@ -468,7 +489,8 @@ export default function ReportListUser() {
                             {(
                               (Number(totalClicks) / Number(totalImpressions)) *
                               100
-                            ).toFixed(2)}%
+                            ).toFixed(2)}
+                            %
                           </span>
                         </td>
                         <td>
