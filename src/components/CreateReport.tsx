@@ -19,14 +19,14 @@ export default function CreateReport() {
   });
   console.log(reportInfo);
   function dateRangeHandle(value: Date) {
-    const date = Date.UTC(
+    const date = new Date(Date.UTC(
       value.getFullYear(),
       value.getMonth(),
       value.getDate(),
       0,
       0,
       0 // Start of the day in UTC
-    )
+    ))
     setReportInfo({ ...reportInfo, dateRange: [date, reportInfo.dateRange[1]] });
   }
   async function handleCreateReportClick() {
