@@ -17,7 +17,7 @@ export default function CreateReport() {
     status: "Pending",
     cpm: 10,
   });
-  console.log(reportInfo);
+  console.log(reportInfo, "NEWNEW");
   function dateRangeHandle(value: Date) {
     const date = new Date(Date.UTC(
       value.getFullYear(),
